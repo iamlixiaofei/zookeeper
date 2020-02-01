@@ -43,3 +43,11 @@ recent release at u211 or above.
 We always welcome new contributors to the project! See [How to Contribute](https://cwiki.apache.org/confluence/display/ZOOKEEPER/HowToContribute) for details on how to submit patch through pull request and our contribution workflow.
 
 
+# 本地运行
+QuorumPeerMain
+在Program arguments中
+配置文件：本地zookeeper安装路径/conf/zoo.cfg
+
+在VM options中添加
+-Dlog4j.configuration=file:/本地zookeeper安装路径/conf/log4j.properties
+-Dzookeeper.admin.enableServer=false

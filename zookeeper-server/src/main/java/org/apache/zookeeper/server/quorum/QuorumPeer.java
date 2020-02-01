@@ -902,16 +902,16 @@ public class QuorumPeer extends ZooKeeperThread implements QuorumStats.Provider 
         if (!getView().containsKey(myid)) {
             throw new RuntimeException("My id " + myid + " not in the peer list");
          }
-        loadDataBase();
-        startServerCnxnFactory();
+        loadDataBase();//加载数据
+        startServerCnxnFactory();//后面会走NIOServerCnxnFactory 与通信有关系-》暴露一个2181端口
         try {
             adminServer.start();
         } catch (AdminServerException e) {
             LOG.warn("Problem starting AdminServer", e);
             System.out.println(e);
         }
-        startLeaderElection();
-        super.start();
+        startLeaderElection();//开始leader选举
+        super.start();// 继承了父类 ZooKeeperThread  调用子类的方法QuorumPeer.run
     }
 
     private void loadDataBase() {
@@ -1790,7 +1790,7 @@ public class QuorumPeer extends ZooKeeperThread implements QuorumStats.Provider 
 
     private void startServerCnxnFactory() {
         if (cnxnFactory != null) {
-            cnxnFactory.start();
+            cnxnFactory.start(); //工厂模式 NIOServerCnxnFactory 中的线程AcceptThread.run
         }
         if (secureCnxnFactory != null) {
             secureCnxnFactory.start();

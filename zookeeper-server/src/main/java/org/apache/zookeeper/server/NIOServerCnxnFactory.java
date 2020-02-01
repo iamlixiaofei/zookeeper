@@ -198,6 +198,7 @@ public class NIOServerCnxnFactory extends ServerCnxnFactory {
             selectorIterator = this.selectorThreads.iterator();
         }
 
+        //当收到客户端请求时，会需要走这个方法
         public void run() {
             try {
                 while (!stopped && !acceptSocket.socket().isClosed()) {
@@ -681,12 +682,12 @@ public class NIOServerCnxnFactory extends ServerCnxnFactory {
             selectorThreads.add(new SelectorThread(i));
         }
 
-        this.ss = ServerSocketChannel.open();
-        ss.socket().setReuseAddress(true);
+        this.ss = ServerSocketChannel.open();//获得一个ServerSocket通道
+        ss.socket().setReuseAddress(true);//端口可复用
         LOG.info("binding to port " + addr);
-        ss.socket().bind(addr);
-        ss.configureBlocking(false);
-        acceptThread = new AcceptThread(ss, addr, selectorThreads);
+        ss.socket().bind(addr);//绑定ip和端口 从配置文件zoo.cfg中获得
+        ss.configureBlocking(false);//非阻塞
+        acceptThread = new AcceptThread(ss, addr, selectorThreads);//注册一个accept
     }
 
     private void tryClose(ServerSocketChannel s) {

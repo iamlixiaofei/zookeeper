@@ -79,6 +79,7 @@ public class QuorumPeerMain {
     public static void main(String[] args) {
         QuorumPeerMain main = new QuorumPeerMain();
         try {
+            //args zoo.cfg配置文件路径
             main.initializeAndRun(args);
         } catch (IllegalArgumentException e) {
             LOG.error("Invalid arguments, exiting abnormally", e);
@@ -108,19 +109,19 @@ public class QuorumPeerMain {
     protected void initializeAndRun(String[] args)
         throws ConfigException, IOException, AdminServerException
     {
-        QuorumPeerConfig config = new QuorumPeerConfig();
+        QuorumPeerConfig config = new QuorumPeerConfig();//保存zoo.cfg解析后的
         if (args.length == 1) {
-            config.parse(args[0]);
+            config.parse(args[0]);//解析文件
         }
 
         // Start and schedule the the purge task
         DatadirCleanupManager purgeMgr = new DatadirCleanupManager(config
                 .getDataDir(), config.getDataLogDir(), config
                 .getSnapRetainCount(), config.getPurgeInterval());
-        purgeMgr.start();
+        purgeMgr.start();//启动一个定时清理的任务
 
         if (args.length == 1 && config.isDistributed()) {
-            runFromConfig(config);
+            runFromConfig(config);//走这个方法
         } else {
             LOG.warn("Either no config or no quorum defined in config, running "
                     + " in standalone mode");
@@ -202,7 +203,7 @@ public class QuorumPeerMain {
           quorumPeer.setQuorumCnxnThreadsSize(config.quorumCnxnThreadsSize);
           quorumPeer.initialize();
           
-          quorumPeer.start();
+          quorumPeer.start();//启动-》go
           quorumPeer.join();
       } catch (InterruptedException e) {
           // warn, but generally this is ok
