@@ -51,4 +51,5 @@ QuorumPeerMain
 在VM options中添加
 -Dlog4j.configuration=file:/本地zookeeper安装路径/conf/log4j.properties
 
+
 -Dzookeeper.admin.enableServer=false
